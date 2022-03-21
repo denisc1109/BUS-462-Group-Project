@@ -33,6 +33,10 @@ require(data.table)
 
 #1/  Use GUI  to open file
 
+for (x in dt)
+{
+  if (x.!isnumeric)
+}
 
 #2/ # traditional # Load csv files using read.csv
 #df <- read.csv("C:/Users/jp_w1/Documents/BUS 462/Assignment 2/chimera_2022.csv", header = TRUE)
