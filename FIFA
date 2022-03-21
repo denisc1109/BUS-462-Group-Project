@@ -4,3 +4,75 @@ ghghghgh
 # Jamie was here
 #SUp
 loser <- ("BandanJaswal")
+
+#BUS-462 Business Analytics | Spring 2022 | Group Project
+#Student: Brent Wang, 301340128, ywa272@gmail.com
+#Date: March 21, 2022
+#Professor: Chaitanya "CK" Kaligotla
+
+#I pledge on my honor that I have neither received nor given unauthorized assistance on this deliverable.
+
+#### PREAMBLE : ## Clearing mem buffers ####
+cat("\014")  # Clear Console
+rm(list = ls(all.names = TRUE))# clear all
+gc()
+
+#require and install the data.table package to work with given data
+install.packages("data.table")
+require(data.table)
+
+# data  link on canvas in Module 3
+#Download data from  https://philchodrow.github.io/cos_2017/1_terminal_and_git/taxi_data.csv  
+# courtesy of of the New York City Taxi and Limousine Commission and PhilChodrow @ MIT
+
+############################
+## WORKING WITH CSV FILES ##
+############################
+# STEP A: Load the DATA
+
+
+#1/  Use GUI  to open file
+
+
+#2/ # traditional # Load csv files using read.csv
+#df <- read.csv("C:/Users/jp_w1/Documents/BUS 462/Assignment 2/chimera_2022.csv", header = TRUE)
+# header = TRUE is usually ASSUMED, so not strictly necessary
+
+#3 / Using data table alternate - fast and effecient!
+dt <- fread("C:/Users/jp_w1/Documents/BUS 462/fifa21_male2_V3.csv")
+dt <- na.omit(dt)
+
+#these next 5 rows are not direclty related to the assignment questions, but rather an exercise for me to play around
+#and get more familiar with R Studio and data mangagement.
+
+#installing necessary packages like psych, dplyr, and tidyverse. Tidyverse helps with the plots like ggplot and 
+#boxplots, for example.
+
+install.packages("psych")
+library(psych)
+describe(dt)
+
+install.packages("dplyr")
+library(dplyr)
+
+install.packages("tidyverse")
+library(tidyverse)
+
+cor(dt) 
+summary(dt) #omits all the rows with NAs
+
+hist(dt$wage)
+hist(dt$attacking)
+
+# Question 1: Which player positions do teams value the most? (via wages)
+# Question 2: Find what impacts the most valued position’s performance the most 
+# Question 3: For the attributes that contribute more to the position’s performance, which part of the world produces 
+# players that score higher in said attributes?
+# Question 4: What roles players should play based on their stats? (some players play multiple roles)
+
+#the most important variables include position, foot, wage, attacking, crossing, finishing, heading accuracy, short
+#passing, volleys, skill, dribbling, curve, fk accuracy, long passing, ball control, movement, acceleration, sprint
+#speed, agility, reactions, balance, power, shot power, jumping, stamina, strength, long shot, aggression, interception,
+#positioning, vision, standing tackle, and sliding tackle.
+
+#in terms of the wages, 
