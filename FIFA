@@ -1,9 +1,4 @@
-#Hello
-#Teresa was here
-ghghghgh
-# Jamie was here
-#SUp
-loser <- ("BandanJaswal")
+
 
 #BUS-462 Business Analytics | Spring 2022 | Group Project
 #Student: Brent Wang, 301340128, ywa272@gmail.com
@@ -39,7 +34,9 @@ for (x in dt)
 }
 
 #2/ # traditional # Load csv files using read.csv
-#df <- read.csv("C:/Users/jp_w1/Documents/BUS 462/Assignment 2/chimera_2022.csv", header = TRUE)
+dt <- fread("C:/Users/jp_w1/Documents/BUS 462/fifa21_male2_V3.csv")
+dt <- na.omit(dt)
+
 # header = TRUE is usually ASSUMED, so not strictly necessary
 
 #3 / Using data table alternate - fast and effecient!
