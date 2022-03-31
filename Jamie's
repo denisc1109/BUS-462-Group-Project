@@ -1,0 +1,69 @@
+cat("\014")  # Clear Console
+rm(list = ls(all.names = TRUE))# clear all
+gc()
+
+# Load data
+dt = fread("C:/Users/Jamie/Desktop/R Data/fifa21_male2.csv")
+
+
+require(data.table)
+library(stargazer)
+
+
+# Removes rows with empty cells and NA's for Position
+# CITE: https://stackoverflow.com/questions/9126840/delete-rows-with-blank-values-in-one-particular-column
+dt = dt[!(dt$Position == ""), ]
+dt = dt[!is.na(dt$Position), ]
+# Removes rows with empty cells and NA's for Wage 
+dt = dt[!(dt$Wage == ""), ]
+dt = dt[!is.na(dt$Wage), ]
+
+
+# Stringr used to find integers within strings
+# Cite: https://stackoverflow.com/questions/15451251/extract-numeric-part-of-strings-of-mixed-numbers-and-characters-in-r
+library(stringr) 
+# Searches for only integers within Wage
+regexp = "[[:digit:]]+"
+dt$Wage = str_extract(dt$Wage, regexp)
+# Convert Wages to integer
+dt$Wage = as.integer(dt$Wage)
+# All Wages are assumed to be rounded to the nearest thousands (so Wage of 0 means they get paid less than 500)
+
+
+# Check if everything is still aligned (positions are different compared to excel due to deleted rows)
+dt$Name[8]
+dt$Wage[8]
+dt$Position[8]
+# Everything seems good 
+
+
+# What we need to do to finish Q1
+# Group players into their positions in a table
+# Insert their corresponding Wages
+# Find the median Wage for all positional wages combined
+# Find average Wage for all individual positions and see which positions are relatively impactful (above median)/not impactful(below median)
+# Use most impactful and least impactful positions for Q2
+
+
+table(dt$Position)
+################ EVERYTHING UNDER HERE IS AN ATTEMPT TO GROUP PLAYERS INTO THEIR POSITIONS IN A TABLE #############
+################ SO DONT TAKE ANYTHING DOWN HERE TOO SERIOUSLY, JUST TRYING STUFF OUT ################
+# Create lists for each Position
+
+Forwards = 0
+Forwards = as.numeric(Forwards)
+
+# Group players into position by salary
+if (dt$Position[1] == "LM") {
+  Forwards = Forwards + 1
+}
+ 
+
+table(dt$Position)
+# Median salary
+# Average salary
+
+     
+
+
+     
