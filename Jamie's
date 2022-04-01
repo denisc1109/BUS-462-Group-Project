@@ -2,12 +2,13 @@ cat("\014")  # Clear Console
 rm(list = ls(all.names = TRUE))# clear all
 gc()
 
-# Load data
-dt = fread("C:/Users/Jamie/Desktop/R Data/fifa21_male2.csv")
-
 
 require(data.table)
 library(stargazer)
+
+
+# Load data
+dt = fread("C:/Users/Jamie/Desktop/R Data/fifa21_male2.csv")
 
 
 # Removes rows with empty cells and NA's for Position
@@ -23,10 +24,11 @@ dt = dt[!is.na(dt$Wage), ]
 # Cite: https://stackoverflow.com/questions/15451251/extract-numeric-part-of-strings-of-mixed-numbers-and-characters-in-r
 library(stringr) 
 # Searches for only integers within Wage
+dt$Wage
 regexp = "[[:digit:]]+"
 dt$Wage = str_extract(dt$Wage, regexp)
 # Convert Wages to integer
-dt$Wage = as.integer(dt$Wage)
+dt$Wage = as.integer(dt$Wage)*1000
 # All Wages are assumed to be rounded to the nearest thousands (so Wage of 0 means they get paid less than 500)
 
 
@@ -46,6 +48,7 @@ dt$Position[8]
 
 
 table(dt$Position)
+length(unique(dt$Position))
 ################ EVERYTHING UNDER HERE IS AN ATTEMPT TO GROUP PLAYERS INTO THEIR POSITIONS IN A TABLE #############
 ################ SO DONT TAKE ANYTHING DOWN HERE TOO SERIOUSLY, JUST TRYING STUFF OUT ################
 # Create lists for each Position
@@ -64,6 +67,9 @@ table(dt$Position)
 # Average salary
 
      
+Forwards = list[cDM,CM,CF,RW,]
 
+
+     Forwards = Forwards+1
 
      
