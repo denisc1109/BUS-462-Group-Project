@@ -1,0 +1,76 @@
+#### PREAMBLE : ## Clearing mem buffers ####
+#Reference: Class sessions
+cat("\014")  # Clear Console
+rm(list = ls(all.names = TRUE))# clear all
+
+#Command to load the csv file
+dt <- read.csv("~/Desktop/BUS 462/Group Assignment/fifa21_male2.csv")
+
+#check for missing values
+colSums(is.na(dt))
+
+require(data.table)
+require(dplyr)
+
+# Removes rows with empty cells and NA's for Position
+# CITE: https://stackoverflow.com/questions/9126840/delete-rows-with-blank-values-in-one-particular-column
+dt = dt[!(dt$BP == ""), ]
+dt = dt[!is.na(dt$BP), ]
+# Removes rows with empty cells and NA's for Value
+dt = dt[!(dt$Value == ""), ]
+dt = dt[!is.na(dt$Value), ]
+
+# Stringr used to find integers within strings
+# Cite: https://stackoverflow.com/questions/15451251/extract-numeric-part-of-strings-of-mixed-numbers-and-characters-in-r
+library(stringr) 
+library(readr)
+
+#remove euro sign out of value
+dt2$Value =(gsub("\\€", "", dt2$Value))
+
+#convert K and M to their respective numbers
+
+dt2$Value <- dplyr::case_when(
+  stringr::str_detect(dt2$Value, 'M') ~ readr::parse_number(dt2$Value) * 1e6,
+  stringr::str_detect(dt2$Value, 'K') ~ readr::parse_number(dt2$Value) * 1e3,
+  TRUE ~ parse_number(dt2$Value)
+)
+  
+#change integers to value
+dt2$Value = as.integer(dt2$Value)
+#Check the data type to make sure
+str(dt2$Value)
+#remove all players with value of 0
+dt2 <- filter(dt2, Value > 0)
+
+#see how many unique positions there are in "best position (BP)" column
+unique(dt2$BP)
+
+#New set with goalkeepers
+gk <- filter(dt2,BP == "GK" )
+#New set with defenders
+def <- filter(dt2,BP == "CB"|BP == "RB"|BP == "LB"|BP == "LWB"|BP == "RWB")
+#New set with midfielders
+mid <- filter(dt2,BP == "CM"|BP == "CAM"|BP == "CDM"|BP == "LM"|BP == "RM")
+#New set with forwards
+fwd <- filter(dt2,BP == "LW"|BP == "RW"|BP == "CF"|BP == "ST")
+
+
+#average value for all players
+mean(dt2$Value) #2,675,967
+
+#Average value for goalkeepers
+mean(gk$Value) #2,320,756
+
+#Average value for defenders
+mean(def$Value) #2,337,389
+
+#Average value for midfielders
+mean(mid$Value) #2,977,058    <- this makes so much more sense
+
+#Average value for forwards
+mean(fwd$Value) #2,799,744    <- this makes so much more sense
+
+###########################
+###Question 2##############
+###########################
