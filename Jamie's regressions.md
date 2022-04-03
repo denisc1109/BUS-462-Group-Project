@@ -23,7 +23,7 @@ dt = dt[!is.na(dt$Value), ]
 library(readr)
 
 #remove euro sign out of value
-dt$Value =(gsub("\\€", "", dt$Value))
+dt$Value =(gsub("\\???", "", dt$Value))
 
 #convert K and M to their respective numbers
 
@@ -86,6 +86,11 @@ stargazer(model.guess, type = "text") # Adjusted R2  0.409
 fwd4= fwd[,c(26,27,28,29,30)] 
 model.guess2 = lm(fwd$Value~.,data=fwd4)
 stargazer(model.guess2, type = "text") # Adjusted R2   0.362
+
+# Willing to take
+fwd6= fwd[,c(26,27,33,35,36,38,39,40,41,45,46)] 
+model.guess4 = lm(fwd$Value ~., data=fwd6)
+stargazer(model.guess4, type = "text") # Adjusted R2  0.407  
 
 # Pick this because highest adjusted R, tells us that finishing, curve, sprint speed are the 3 most important vars
 fwd5= fwd[,c(27,28,30,33,39,44,45,48,50)] 
