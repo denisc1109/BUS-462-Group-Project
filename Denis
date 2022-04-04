@@ -67,7 +67,115 @@ mean(mid$Value) #2,944,261    <- USE
 #Average value for forwards
 mean(fwd$Value) #2,761,147    <- USE
 
-######################################
-###Question 2#########################
-######################################
+###########################################
+##############Question 2###################
+###########################################
 
+require(stargazer)
+require(PerformanceAnalytics)
+
+#dependent variable is the value of players in the positions
+#independent variables are the attributes of the players
+
+#creating new tables with the information we need - This one is for midfielders
+#more digestible way of comparing the data
+#splitting it into attack, skill, movement, power, mentality, and defending
+mid.atk <- mid[,c("Value", "Crossing", "Finishing","Heading.Accuracy","Short.Passing", "Volleys")]
+mid.skill <- mid[,c("Value", "Dribbling", "Curve", "FK.Accuracy", "Long.Passing", "Ball.Control")]
+mid.move <- mid[,c("Value", "Acceleration", "Sprint.Speed", "Agility", "Reactions", "Balance")]
+mid.pwr <- mid[,c("Value", "Shot.Power", "Jumping", "Stamina", "Strength", "Long.Shots")]
+mid.ment <- mid[,c("Value", "Aggression", "Interceptions", "Positioning", "Vision", "Penalties")]
+mid.def <- mid[,c("Value", "Marking", "Standing.Tackle", "Sliding.Tackle")]
+
+#Check the structure of the variables
+str(mid.atk)
+str(mid.skill)
+str(mid.move)
+str(mid.pwr)
+str(mid.ment)
+str(mid.def)
+#they are all int or num so no issues
+
+#Attacking attributes 
+mid.atk.ks <- lm(Value~.,data=mid.atk)
+stargazer(mid.atk.ks, type = "text")
+#Adjusted R2 = 0.375
+
+#Skill attributes ---------------------------------- Ball control & Dribbling
+mid.skill.ks <- lm(Value~.,data=mid.skill)
+stargazer(mid.skill.ks, type = "text")
+#Adjusted R2 = 0.404
+
+#Movement attributes
+mid.move.ks <- lm(Value~.,data=mid.move)
+stargazer(mid.move.ks, type = "text")
+#Adjusted R2 = 0.375
+
+#Power attributes
+mid.pwr.ks <- lm(Value~.,data=mid.pwr)
+stargazer(mid.pwr.ks, type = "text") 
+#Adjusted R2 = 0.260
+
+#Mentality attributes
+mid.ment.ks <- lm(Value~.,data=mid.ment)
+stargazer(mid.ment.ks, type = "text")
+#Adjusted R2 = 0.340
+
+#Defence attributes
+mid.def.ks <- lm(Value~.,data=mid.def)
+stargazer(mid.def.ks, type = "text")
+#Adjusted R2 = 0.057
+
+stargazer(mid.pwr.ks,mid.ment.ks,mid.def.ks, type = "text")
+#look short passing 332,295, Reactions 366,180, Ball control 270,213
+
+#creating new tables with the information we need - This one is for forwards
+#splitting it into attack, skill, movement, power, mentality, and defending
+fwd.atk <- fwd[,c("Value", "Crossing", "Finishing","Heading.Accuracy","Short.Passing", "Volleys")]
+fwd.skill <- fwd[,c("Value", "Dribbling", "Curve", "FK.Accuracy", "Long.Passing", "Ball.Control")]
+fwd.move <- fwd[,c("Value", "Acceleration", "Sprint.Speed", "Agility", "Reactions", "Balance")]
+fwd.pwr <- fwd[,c("Value", "Shot.Power", "Jumping", "Stamina", "Strength", "Long.Shots")]
+fwd.ment <- fwd[,c("Value", "Aggression", "Interceptions", "Positioning", "Vision", "Penalties")]
+fwd.def <- fwd[,c("Value", "Marking", "Standing.Tackle", "Sliding.Tackle")]
+
+#Check the structure of the variables
+str(fwd.atk)
+str(fwd.skill)
+str(fwd.move)
+str(fwd.pwr)
+str(fwd.ment)
+str(fwd.def)
+#All int or num so no issues
+
+#Attacking attributes --------------------------Finishing & Short Passing
+fwd.atk.ks <- lm(Value~.,data=fwd.atk)
+stargazer(fwd.atk.ks, type = "text")
+#Adjusted R2 = 0.362
+
+#Skill attributes
+fwd.skill.ks <- lm(Value~.,data=fwd.skill)
+stargazer(fwd.skill.ks, type = "text")
+#Adjusted R2 = 0.324
+
+#Movement attributes
+fwd.move.ks <- lm(Value~.,data=fwd.move)
+stargazer(fwd.move.ks, type = "text")
+#Adjusted R2 = 0.346
+
+#Power attributes
+fwd.pwr.ks <- lm(Value~.,data=fwd.pwr)
+stargazer(fwd.pwr.ks, type = "text")
+#Adjusted R2 = 0.277
+
+#Mentality attributes
+fwd.ment.ks <- lm(Value~.,data=fwd.ment)
+stargazer(fwd.ment.ks, type = "text")
+#Adjusted R2 = 0.322
+
+#Defending attributes
+fwd.def.ks <- lm(Value~.,data=fwd.def)
+stargazer(fwd.def.ks, type = "text")
+#Adjusted R2 = 0.053
+
+stargazer(fwd.skill.ks,fwd.ment.ks,fwd.def.ks, type = "text")
+#look ball control 339,699, finishing 421,018, reaction 394,210
