@@ -237,10 +237,41 @@ mid.nat$ball <- mid.nat$ball *270213
 mid.nat$shortpass <- mid.nat$shortpass *332295.90
 
 #Sum up the values in a new column
+fwd.nat$sum = rowSums(fwd.nat[,2:4])
+mid.nat$sum = rowSums(mid.nat[,2:4])
 
-fwd.nat$sum <- rowSums(fwd.nat$reactions,fwd.nat$ball,fwd.nat$fin)
+#Find the max for forwards
+summary(fwd.nat$sum) 
+fwd.nat[which.max(fwd.nat$sum),] #China
 
-#Forward: ball control 339,699.60, finishing 421,018.30, reaction 394,210
-#Midfielder: short passing 332,295.90, Reactions 366,180.90, Ball control 270,213
+#Find the max for midfielder
+summary(mid.nat$sum)
+mid.nat[which.max(mid.nat$sum),] #Argentina
+
+# LASSO - finds the right amount of variables to use for regression
+# We should use LASSO on a regression with POTENTIAL variables for each position
+# However i used what I thought were potetntial vars for each position 
+
+fwd.guess <- fwd[,c("Value", "Crossing", "Finishing","Heading.Accuracy","Short.Passing", "Volleys"
+                    , "Dribbling", "Curve", "Long.Passing", "Ball.Control"
+                    , "Acceleration", "Sprint.Speed", "Agility", "Reactions", "Balance"
+                    , "Shot.Power", "Jumping", "Stamina", "Strength", "Long.Shots"
+                    , "Aggression", "Vision", "Penalties")]
+
+mid.guess <- mid[,c("Value", "Crossing", "Heading.Accuracy","Short.Passing", "Volleys"
+                    , "Dribbling", "Curve", "Long.Passing", "Ball.Control"
+                    , "Acceleration", "Sprint.Speed", "Agility", "Reactions", "Balance"
+                    , "Shot.Power", "Jumping", "Stamina", "Strength"
+                    , "Aggression", "Interceptions", "Positioning", "Vision"
+                    ,"Marking", "Standing.Tackle", "Sliding.Tackle")]
+
+fwd.guess1 = lm(fwd.guess$Value ~., data=fwd.guess)
+mid.guess1 = lm(mid.guess$Value ~., data=mid.guess)
+
+step.fwd = step(fwd.guess1,direction = 'both')
+stargazer(step.fwd, type= "text") # finishing # reactions # ball control for fwd
+
+step.mid = step(mid.guess1,direction = 'both')
+stargazer(step.mid, type= "text") # short pass # reactions # ball control for fwd
 
 
