@@ -127,7 +127,7 @@ stargazer(mid.def.ks, type = "text")
 #Adjusted R2 = 0.057
 
 stargazer(mid.pwr.ks,mid.ment.ks,mid.def.ks, type = "text")
-#look short passing 332,295, Reactions 366,180, Ball control 270,213
+#Midfielder: short passing 332,295.90, Reactions 366,180.90, Ball control 270,213
 
 #creating new tables with the information we need - This one is for forwards
 #splitting it into attack, skill, movement, power, mentality, and defending
@@ -178,4 +178,69 @@ stargazer(fwd.def.ks, type = "text")
 #Adjusted R2 = 0.053
 
 stargazer(fwd.skill.ks,fwd.ment.ks,fwd.def.ks, type = "text")
-#look ball control 339,699, finishing 421,018, reaction 394,210
+#look ball control 339,699.60, finishing 421,018.30, reaction 394,210
+
+
+#was just curious
+stargazer(mid.atk,type="text",summary.stat = c("min", "p25", "median","mean", "p75", "max","sd"))
+chart.Correlation(fwd.atk, histogram=TRUE, pch=19)
+#short passing has a 0.57
+
+###########################################
+##############Question 3###################
+###########################################
+
+# sort countries alphabetically 
+dt$Nationality = sort(dt$Nationality)
+
+# Create table with nation and forward regression variables
+data=data.table(nation = dt$Nationality,
+                reactions = dt$Reactions,
+                ball = dt$Ball.Control,
+                fin = dt$Finishing)
+
+# Create table with nation and midfield regression variables
+data2=data.table(nation = dt$Nationality,
+                reactions = dt$Reactions,
+                ball = dt$Ball.Control,
+                shortpass = dt$Short.Passing)               
+
+# Calculates the average amount for all traits, grouped by countries
+fwd.nat = data[, lapply(.SD,mean), by = nation]
+mid.nat =data2[, lapply(.SD,mean), by = nation]
+
+# Finds amount of people for each country
+people=table(dt$Nationality)
+people=as.integer(people)
+people
+
+# Insert people column into forward table
+fwd.nat$people = people
+fwd.nat
+
+# Insert people column into midfielder table
+mid.nat$people = people
+mid.nat
+
+#Chose to filter out results that has less than 100 people
+fwd.nat <- filter(fwd.nat, people>100)
+mid.nat <- filter(mid.nat, people>100)
+
+#Multiply values by their coefficients - forwards
+fwd.nat$reactions <- fwd.nat$reactions * 394210
+fwd.nat$ball <- fwd.nat$ball * 339699.60
+fwd.nat$fin <- fwd.nat$fin * 421018.30
+
+#Multiply values by their coefficients - midfielders
+mid.nat$reactions <- mid.nat$reactions * 366180.90
+mid.nat$ball <- mid.nat$ball *270213
+mid.nat$shortpass <- mid.nat$shortpass *332295.90
+
+#Sum up the values in a new column
+
+fwd.nat$sum <- rowSums(fwd.nat$reactions,fwd.nat$ball,fwd.nat$fin)
+
+#Forward: ball control 339,699.60, finishing 421,018.30, reaction 394,210
+#Midfielder: short passing 332,295.90, Reactions 366,180.90, Ball control 270,213
+
+
